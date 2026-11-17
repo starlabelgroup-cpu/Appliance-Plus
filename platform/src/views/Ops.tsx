@@ -86,6 +86,20 @@ export function Connect() {
   return (
     <div>
       <div className="card" style={{ marginBottom: 20 }}>
+        <h3>Top Speed Service OS — open in Service OS</h3>
+        <p className="muted">
+          Connection status: this platform connects to Top Speed Service OS via the links below until a real API
+          integration exists. These links open Top Speed Service OS — no live data sync is claimed.
+        </p>
+        <p>
+          <a href="https://topspeedserviceos.com/parts" target="_blank" rel="noreferrer">Parts Supply OS — open Top Speed Service OS</a>
+          {" · "}
+          <a href="https://topspeedserviceos.com/book" target="_blank" rel="noreferrer">Book a Repair — open Top Speed Service OS</a>
+          {" · "}
+          <a href="https://topspeedserviceos.com/track" target="_blank" rel="noreferrer">Track — open Top Speed Service OS</a>
+        </p>
+      </div>
+      <div className="card" style={{ marginBottom: 20 }}>
         <h3>Service OS Connect — approval gate</h3>
         <p className="muted">A ticket in "Offers ready" can only advance when a named human approves the purchase.
         Type your name, then advance TS-2041 — without a name it stays put.</p>

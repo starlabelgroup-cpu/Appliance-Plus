@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dashboard from "./views/Dashboard";
 import Store from "./views/Store";
 import Checkout from "./views/Checkout";
@@ -10,8 +10,41 @@ import { useCart } from "./lib/cart";
 const TABS = ["Dashboard", "Store", "Checkout", "Pro", "PLUS AI", "Warehouse", "Service OS Connect"] as const;
 type Tab = (typeof TABS)[number];
 
+const TAB_TO_QUERY: Record<Tab, string> = {
+  Dashboard: "dashboard",
+  Store: "store",
+  Checkout: "checkout",
+  Pro: "pro",
+  "PLUS AI": "plus-ai",
+  Warehouse: "warehouse",
+  "Service OS Connect": "connect",
+};
+
+const QUERY_TO_TAB: Record<string, Tab> = {
+  dashboard: "Dashboard",
+  store: "Store",
+  checkout: "Checkout",
+  pro: "Pro",
+  "plus-ai": "PLUS AI",
+  warehouse: "Warehouse",
+  connect: "Service OS Connect",
+};
+
+function initialTab(): Tab {
+  if (typeof window === "undefined") return "Dashboard";
+  const q = new URLSearchParams(window.location.search).get("tab");
+  return (q && QUERY_TO_TAB[q.toLowerCase()]) || "Dashboard";
+}
+
 export default function App() {
-  const [tab, setTab] = useState<Tab>("Dashboard");
+  const [tab, setTab] = useState<Tab>(initialTab);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", TAB_TO_QUERY[tab]);
+    const url = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+    window.history.replaceState(null, "", url);
+  }, [tab]);
   const cart = useCart();
   return (
     <div>
@@ -42,7 +75,13 @@ export default function App() {
         {tab === "Warehouse" && <Warehouse />}
         {tab === "Service OS Connect" && <Connect />}
       </main>
-      <footer>Appliance Plus Parts Supply · A Top Speed Appliance company · Broward County, FL</footer>
+      <footer>
+        <a href="https://topspeedserviceos.com/parts" target="_blank" rel="noreferrer">
+          Appliance Plus Parts Supply — a vendor partner in the Top Speed Appliance Service Network
+        </a>
+        <br />
+        Appliance Plus Parts Supply · A Top Speed Appliance company · Broward County, FL
+      </footer>
     </div>
   );
 }
