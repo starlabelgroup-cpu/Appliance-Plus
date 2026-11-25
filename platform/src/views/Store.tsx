@@ -47,14 +47,23 @@ export default function Store({ goCheckout }: { goCheckout: () => void }) {
                   {ev ? <span className="pill verified">Verified fit — {model}</span> : <span className="pill unverified">Not verified for {model}</span>}
                 </div>
                 <div style={{ textAlign: "right" }}>
-                  <div className="price">{money(p.price)}</div>
-                  <div className="pro-price">Pro {money(p.proPrice)}</div>
-                  <button className="btn" style={{ marginTop: 6, padding: "7px 16px" }} onClick={() => { cart.add(p.sku); setSelected(p); }}>Add</button>
+                  {p.price > 0 ? (
+                    <>
+                      <div className="price">{money(p.price)}</div>
+                      <div className="pro-price">Pro {money(p.proPrice)}</div>
+                      <button className="btn" style={{ marginTop: 6, padding: "7px 16px" }} onClick={() => { cart.add(p.sku); setSelected(p); }}>Add</button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="pro-price">Price at order</div>
+                      <div className="muted" style={{ fontSize: 12, marginTop: 6 }}>Priced by the distributor<br />when the order is placed</div>
+                    </>
+                  )}
                 </div>
               </div>
             );
           })}
-          {results.length === 0 && <p className="muted">No parts match that search in the starter catalog.</p>}
+          {results.length === 0 && <p className="muted">No parts match that search in the catalog.</p>}
         </div>
 
         <div>
